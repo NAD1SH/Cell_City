@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="div">
+    <div class="section Mobile-categories">
+        <div class="container-lg">
+            <div class="row">
+                <hr>
+                {% for i in product %}
+                <div class="col-12 my-4">
+                    <div class="">
+                        <div class="row">
+                            <div class="col-4 d-flex justify-content-center">
+                                <div class="category-img">
+                                    <a href="{% url 'prodetail' i.id %}"><img
+                                            src="{{ i.mobileImage.url }}" alt=""
+                                            style="max-height: 400px;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="category-spec">
+                                    <span class="fw-bold">{{ i.mobileName }} <span>
+                                    <ol>
+                                        <li>{{ i.mobileRam }}</li>
+                                        <li>{{ i.mobileDisplay }}</li>
+                                        <li>{{ i.mobileCamera }}</li>
+                                        <li>{{ i.mobileBattery }}</li>
+                                        <li>{{ i.mobileProcessor }}</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="category-price">
+                                    <h4><i class="bi bi-currency-rupee"></i> {{ i.mobileOfferPrice }}</h4>
+                                    <span class=""><i class="bi bi-currency-rupee"></i> <del>{{ i.mobilePrice }}</del></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="height: 1px; width: 100%;" class="bg-secondary my-2"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

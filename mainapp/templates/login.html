@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="vh-100" style="margin-top: 70px;">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+          alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form method="post" novalidate class="shadow p-5">
+          {% csrf_token %}
+          {% for i in form %}
+          {{ i.label_tag }} {{ i }} <small class="text-danger">{{ fm.errors | striptags }}</small>
+          <br>
+          {% endfor %}
+          <br>
+          <small class="">
+            <a href="{% url 'passwordReset' %}" >Forgot Password ?</a>
+          </small>
+          <br>
+          <h1 class="text-center"><input type="submit" value="Login" class="btn btn-secondary mt-4 px-5 py-2 mb-2"></h1>
+
+          <div class="text-center text-primary fw-bold">
+            <small>New User ? <a href="{% url 'register' %}" class="text-danger">Create an Account</a>
+            </small>
+          </div>
+
+          {% if form.non_field_errors %}
+          {% for i in form.non_field_errors %}
+          <p class="alert alert-danger my-3">{{ i }}</p>
+          {% endfor %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

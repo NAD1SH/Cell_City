@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="margin-top: 70px;">
+    {% if messages %}
+    {% for i in messages %}
+    <div class="alert alert-danger" role="alert">
+        {{ i }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-6 mt-5">
+            <h4>Order Summary</h4>
+            <hr>
+            {% for i in cart_items %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5>Product : {{ i.product.mobileName }}</h5>
+                    <p>Quantity : {{ i.quantity }}</p>
+                    <p class="fw-bold">price : {{ i.product.mobileOfferPrice }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <p class="fw-bold">Total Cost + Rs 40 = {{ totalamount }}</p>
+            <small>Term and Conditions: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Deserunt vitae distinctio corporis voluptas quibusdam, quia cupiditate dicta sapiente aut veniam?
+            </small>
+        </div>
+        <div class="col-4 offset-2 mt-5">
+            <h4>Select Shipping Address</h4>
+            <hr>
+
+            <form method="post" id="myform">
+                {% csrf_token %}
+                {% for i in add %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5>{{ i.name }}</h5>
+                        <p>mobile: {{ i.mobile }}</p>
+                        <p>{{ i.locality }} {{ i.city }} {{ i.state }} - {{ i.zipcode }} </p>
+                    </div>
+                </div>
+                <div class="form-check mt-2 mb-5">
+                    <input type="radio" class="form-check-input" name="custid" id="custadd{{forloop.country}}"
+                        value="{{i.id}}">
+                    <label for="custadd{{forloop.country}}" class="form-check-lable fw-bold">Address
+                        :{{forloop.country}} </label>
+                </div>
+                {% endfor %}
+                <div class="form-check mb-3">
+                    <label for="totalamount" class="form-lable">Total Amount</label>
+                    <input type="number" class="form-control" name="totalamount" value="{{ totalamount }}"
+                        style="pointer-events: none;">
+                </div>
+                <div class="text-end">
+                    <button id="rzp-button1" type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block payment-gateway %}
+<script>
+    var options = {
+        "key": "rzp_test_uJwQcUEWdKyI2k", 
+        "amount": "{{razoramount}}",
+        "currency": "INR",
+        "name": "cell city",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": "{{order_id}}",
+        "handler": function (response) {
+            console.log('success')
+            var form = document.getElementById('myform');
+            //alert(response.razorpay_payment_id);
+            //alert(response.razorpay_order_id);
+            //alert(response.razorpay_signature)
+            window.location.href = 'http://localhost:8100/paymentdone?order_id=${response.razorpay_order_id}&payment_id=${response.razorpay_payment_id}&cust_id=${form.elements["custid"].value}'    
+        },
+
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response) {
+    });
+    document.getElementById('rzp-button1').onclick = function (e) {
+        console.log('button click')
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>
+{% endblock payment-gateway %}

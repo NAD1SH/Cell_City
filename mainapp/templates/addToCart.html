@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-lg" style="margin-top: 80px;">
+    <div class="row">
+        {% if cart %}
+        <h1 class="text-center mb-5">Shopping Cart</h1>
+        <div class="col-12 col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Cart</h3>
+                    <br>
+                    {% for i in cart %}
+                    <div class="row">
+                        <div class="col-3 text-center align-self-center d-flex justify-content-center">
+                            <div class="category-img">
+                                <img src="{{ i.product.mobileImage.url }}" alt="" style="max-height: 250px;">
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div>
+                                <h5 class="mb-2">{{ i.product.mobileName }}</h5>
+                                <ol class="mb-2 small">
+                                    <li>{{ i.product.mobileRam }}</li>
+                                    <li>{{ i.product.mobileProcessor }}</li>
+                                    <li>{{ i.product.mobileBattery }}</li>
+                                </ol>
+                                <div class="my-4 mb-3">
+
+                                    <label for="quantity">Quantity : </label>
+                                    <a  pid={{i.product.id}} class="minus-cart bg-dark text-white btn-sm  me-1 btn" ><i class="bi bi-dash"></i></a>
+                                    <span id="quantity">{{ i.quantity }}</span>
+                                    <a pid={{i.product.id}} class="plus-cart bg-dark text-white btn-sm ms-1 btn" ><i class="bi bi-plus"></i></a>
+                               
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <a pid={{i.product.id}} class="remove-cart  btn btn-sm btn-danger me-3">Remove Item</a>
+                                    <p class="mb-0"><span><strong>Rs. {{ i.product.mobileOfferPrice }}</strong></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div  class="bg-secondary my-3" style="height: 1px; width: 100%;"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3>The Total Amound of</h3>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 ">Amount <span id="amount">Rs. {{ amount }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">Shipping <span>Rs. 40.00</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                            <div>
+                                <strong>Total</strong> <small>(including GST)</small>
+                            </div>
+                            <span id="totalamount"><strong>Rs. {{ totalamount }}</strong></span>
+                        </li>
+                    </ul>
+                    <div class="d-grid">
+                        <a href="{% url 'checkout' %}" class="btn btn-primary">Place Order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <h1 class="text-center mb-5">Cart is Empty</h1>
+         {% comment %} <div class="tenor-gif-embed" data-postid="18256354" data-share-method="host" data-aspect-ratio="0.821875" data-width="100%"><a href="https://tenor.com/view/stickergiant-swipe-up-swipe-shop-shop-now-gif-18256354">Stickergiant Swipe Up Sticker</a>from <a href="https://tenor.com/search/stickergiant-stickers">Stickergiant Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script> {% endcomment %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

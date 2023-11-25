@@ -1,0 +1,163 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>{% block title%}
+    {% endblock title%}
+  </title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+  <!-- bootstrap icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static '/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static '/css/templatemo-lugx-gaming.css' %}">
+  <link rel="stylesheet" href="{% static '/css/owl.css' %}">
+  <link rel="stylesheet" href="{% static '/css/animate.css' %}">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <link href="{% static '/css/login.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+  <!--***** nav bar **** -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+    <div class="container-lg">
+      <a disabled><img src="{% static '/image/cellCity.png' %}" alt="" width="150px" height="60px"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" id="tog-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="list-style: none;">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link active text-white fw-bolder" aria-current="page" href="{% url 'home' %}">HOME</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#!" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              COLLECTION
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'category' 'redmi' %}">redmi</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'category' 'realme' %}">realme</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'category' 'iphone' %}">iphone</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'category' 'poco' %}">poco</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'category' 'samsung' %}">samsung</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white pointer" href="{% url 'profile' %}">PROFILE</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white pointer" href="{% url 'show_cart' %}">CART <i class="bi bi-cart4"></i> <span class="badge bg-danger">{% if totalitem > 0 %} {{totalitem}} {% endif %} </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white pointer me-2">FAV <i class="bi bi-heart-fill"></i></a>
+          </li>
+        </ul>
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i></a>
+
+        {% else %}
+        
+        <li class="nav-item">
+          <a class="nav-link active text-white fw-bolder" aria-current="page" href="{% url 'home' %}">HOME</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#!" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            COLLECTION
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'category' 'redmi' %}">redmi</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'category' 'realme' %}">realme</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'category' 'iphone' %}">iphone</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'category' 'poco' %}">poco</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'category' 'samsung' %}">samsung</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white pointer" href="{% url 'login' %}">PROFILE</a>
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link text-white pointer me-2">FAV <i class="bi bi-heart-fill"></i></a>
+        </li>
+        </ul>
+        <a href="{% url 'login' %}" class="btn btn-outline-light px-4 me-2">LOGIN</a>
+
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    {% block content %}
+
+    {% endblock content %}
+
+    {% block payment-gateway %}
+
+    {% endblock payment-gateway %}
+
+  </main>
+  <!-- <footer> -->
+  <!-- place footer here -->
+  <!-- </footer> -->
+  <!-- Bootstrap JavaScript Libraries -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+    </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+    </script>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'jquery/jquery.min.js' %}"></script>
+  <!-- <script src="vendor/bootstrap/js/bootstrap.min.js"></script> -->
+  <script src="{% static '/js/isotope.min.js' %}"></script>
+  <script src="{% static '/js/owl-carousel.js' %}"></script>
+  <script src="{% static '/js/counter.js' %}"></script>
+  <script src="{% static '/js/custom.js' %}"></script>
+  <Script src="{% static '/js/login.js' %}"></Script>
+  <Script src="{% static '/js/style.js' %}"></Script>
+  <Script src="{% static '/js/cart.js' %}"></Script>
+</body>
+
+</html>
