@@ -3,9 +3,7 @@
 <html lang="en">
 
 <head>
-  <title>{% block title%}
-    {% endblock title%}
-  </title>
+  <title>CELL CITY</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,6 +23,7 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <link href="{% static '/css/login.css' %}" rel="stylesheet">
+  <link rel="shortcut icon" href="{% static 'image/chat.png' %}" type="image/x-icon">
 
 </head>
 
@@ -72,7 +71,11 @@
             <a class="nav-link text-white pointer" href="{% url 'profile' %}">PROFILE</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white pointer" href="{% url 'show_cart' %}">CART <i class="bi bi-cart4"></i> <span class="badge bg-danger">{% if totalitem > 0 %} {{totalitem}} {% endif %} </span></a>
+            <a class="nav-link text-white pointer" href="{% url 'show_cart' %}">CART <i class="bi bi-cart4"></i> 
+              {% if item != None %}
+              <span class="badge bg-danger">{{item}} </span>
+              {% endif %}
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white pointer me-2">FAV <i class="bi bi-heart-fill"></i></a>

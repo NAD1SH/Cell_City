@@ -13,8 +13,10 @@ client=razorpay.Client(auth=(settings.RAZOR_KEY_ID,settings.RAZOR_KEY_SECRET))
 # Create your views here.
 
 def Index(request):
+    totalitem = len(Cart.objects.filter(user=request.user))
     bestProduct = {
-        'bestseller' : BestSellerFrontPage.objects.all()
+        'bestseller' : BestSellerFrontPage.objects.all(),
+        'item' : totalitem
     }
     return render(request, 'index.html', bestProduct)
 
@@ -142,8 +144,11 @@ def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id') 
     products = Products.objects.get(id=product_id)
-    Cart(user=user, product=products).save()
-    return redirect('/show_cart')
+    if Cart.objects.filter(user=request.user, product=products):
+        return redirect('/show_cart')
+    else:
+        Cart(user=user, product=products).save()
+        return redirect('/show_cart')
 
 
 def show_cart(request):
@@ -327,18 +332,28 @@ def remove_cart(request):
         c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
         c.delete()
         user = request.user
-        cart = Cart.objects.filter(user=user)
+        cart = Cart.objects.filter(user=user).first()
         amount = 0
-        for i in cart:
-            value = i.quantity * i.product.mobileOfferPrice
-            amount = amount + value
-        totalamount = amount + 40
-        data = {
-            'quantity' : i.quantity,
-            'amount' : amount,
-            'totalamount' : totalamount
-        }
-        return JsonResponse(data)  
+        print(cart)
+        if cart != None:
+            print('cart not empty')
+            for i in cart:
+                value = i.quantity * i.product.mobileOfferPrice
+                amount = amount + value
+                totalamount = amount + 40
+                data = {
+                    'quantity' : i.quantity,
+                    'amount' : amount,
+                    'totalamount' : totalamount,
+                    "cart" : True
+                }
+        else:
+            print('cart empty')
+            data = {
+                'cart' : False
+            }
+            return JsonResponse(data)
+        return JsonResponse(data)
     
 
 def orders (request) :

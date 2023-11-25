@@ -51,10 +51,16 @@ $('.remove-cart').click(function(){
             prod_id : id
         },
         success : function(data){
-            eml.innerText = data.quantity
-            document.getElementById('amount').innerText = data.amount
-            document.getElementById('totalamount').innerText = data.totalamount
-            eml.parentNode.parentNode.parentNode.parentNode.remove()
+            if (data.cart == true){
+                console.log(data.cart)
+                eml.innerText = data.quantity
+                document.getElementById('amount').innerText = data.amount
+                document.getElementById('totalamount').innerText = data.totalamount
+                eml.parentNode.parentNode.parentNode.parentNode.remove()
+            } else {
+                console.log(data.cart)
+                eml.parentNode.parentNode.parentNode.parentNode.remove()
+            }
         }
     })
 })
